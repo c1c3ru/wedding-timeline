@@ -7,6 +7,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { Heart } from "lucide-react";
+import { COUPLE_NAMES } from "@/lib/data";
 
 export default function Footer() {
   const { ref, isInView } = useInView({ threshold: 0.2 });
@@ -40,12 +41,23 @@ export default function Footer() {
             &amp;
           </p>
 
-          {/* Message */}
+          {/* Names */}
           <p
-            className="text-lg sm:text-xl font-light italic mb-2"
+            className="text-2xl sm:text-3xl font-light mb-2"
             style={{
               fontFamily: "'Cormorant Garamond', serif",
               color: "rgba(255,255,255,0.88)",
+            }}
+          >
+            {COUPLE_NAMES.partner2} &amp; {COUPLE_NAMES.partner1}
+          </p>
+
+          {/* Message */}
+          <p
+            className="text-base sm:text-lg font-light italic mb-2"
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              color: "rgba(255,255,255,0.55)",
             }}
           >
             Sua presença é o nosso maior presente

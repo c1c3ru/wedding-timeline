@@ -6,7 +6,7 @@
 */
 
 import { useState, useEffect } from "react";
-import { navItems } from "@/lib/data";
+import { navItems, COUPLE_NAMES } from "@/lib/data";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -50,7 +50,7 @@ export default function Header() {
               color: textColor,
             }}
           >
-            27.06.26
+            {COUPLE_NAMES.partner2[0]}&amp;{COUPLE_NAMES.partner1[0]}
           </button>
 
           {/* Desktop Nav */}

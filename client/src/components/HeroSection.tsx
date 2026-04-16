@@ -6,7 +6,7 @@
 */
 
 import { useCountdown } from "@/hooks/useCountdown";
-import { WEDDING_DATE } from "@/lib/data";
+import { WEDDING_DATE, COUPLE_NAMES } from "@/lib/data";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
@@ -107,7 +107,7 @@ export default function HeroSection() {
           className="text-[3.4rem] sm:text-6xl md:text-7xl lg:text-8xl font-light text-white leading-[1.05] mb-3"
           style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
-          Ilana & Cícero
+          {COUPLE_NAMES.partner2} &amp; {COUPLE_NAMES.partner1}
         </motion.h1>
 
         {/* Date */}

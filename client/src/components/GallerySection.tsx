@@ -1,255 +1,267 @@
 /*
   DESIGN: "Warm Editorial"
-  Gallery — grid de fotos com efeito hover, lightbox para visualização ampliada
-  Tipografia: Cormorant Garamond display, Nunito Sans body
-  Otimizado para mobile-first
+  GallerySection — grade masonry com lightbox interativo
+  Paleta: cream (#FAF7F2), terracota (#C4714A), dourado (#B8965A), grafite (#3D3530)
+  Tipografia: Cormorant Garamond (títulos) + Nunito Sans (corpo)
+
+  Para adicionar/trocar fotos: edite o array galleryPhotos em client/src/lib/data.ts
 */
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { galleryPhotos, COUPLE_NAMES, type GalleryPhoto } from "@/lib/data";
 
-// Dados de exemplo - substitua com URLs reais das fotos
-const GALLERY_IMAGES = [
-  {
-    id: 1,
-    url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/hero-wedding-5JtCTZXJrbvc5bEQAiyrcd.webp",
-    alt: "Ilana e Cícero - Foto 1",
-  },
-  {
-    id: 2,
-    url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
-    alt: "Ilana e Cícero - Foto 2",
-  },
-  {
-    id: 3,
-    url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
-    alt: "Ilana e Cícero - Foto 3",
-  },
-  {
-    id: 4,
-    url: "https://images.unsplash.com/photo-1469371670267-496523562274?w=800&q=80",
-    alt: "Ilana e Cícero - Foto 4",
-  },
-  {
-    id: 5,
-    url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80",
-    alt: "Ilana e Cícero - Foto 5",
-  },
-  {
-    id: 6,
-    url: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80",
-    alt: "Ilana e Cícero - Foto 6",
-  },
-];
+/* ─── Lightbox ──────────────────────────────────────────────────────────── */
+function Lightbox({
+  photos,
+  index,
+  onClose,
+}: {
+  photos: GalleryPhoto[];
+  index: number;
+  onClose: () => void;
+}) {
+  const [current, setCurrent] = useState(index);
 
-function GalleryImage({ image, onClick }: { image: typeof GALLERY_IMAGES[0]; onClick: () => void }) {
+  const prev = () => setCurrent((c) => (c - 1 + photos.length) % photos.length);
+  const next = () => setCurrent((c) => (c + 1) % photos.length);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  // Prevent body scroll
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const photo = photos[current];
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6 }}
-      className="relative aspect-square overflow-hidden rounded-lg cursor-pointer group"
-      onClick={onClick}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ backgroundColor: "rgba(30, 22, 18, 0.96)" }}
+      onClick={onClose}
     >
-      <img
-        src={image.url}
-        alt={image.alt}
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Close */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-10 p-2 rounded-full transition-colors"
+        style={{ color: "#FAF7F2", background: "rgba(255,255,255,0.1)" }}
+        aria-label="Fechar"
+      >
+        <X size={22} />
+      </button>
+
+      {/* Prev */}
+      <button
+        onClick={(e) => { e.stopPropagation(); prev(); }}
+        className="absolute left-3 md:left-6 z-10 p-2 rounded-full transition-colors"
+        style={{ color: "#FAF7F2", background: "rgba(255,255,255,0.1)" }}
+        aria-label="Anterior"
+      >
+        <ChevronLeft size={26} />
+      </button>
+
+      {/* Image */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.96 }}
+          transition={{ duration: 0.25 }}
+          className="flex flex-col items-center px-14 md:px-20 max-h-screen"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            className="max-h-[80vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
+          />
+          {photo.caption && (
+            <p
+              className="mt-4 text-sm tracking-widest uppercase"
+              style={{ color: "rgba(250,247,242,0.6)", fontFamily: "'Nunito Sans', sans-serif" }}
+            >
+              {photo.caption}
+            </p>
+          )}
+          <p
+            className="mt-1 text-xs"
+            style={{ color: "rgba(250,247,242,0.35)", fontFamily: "'Nunito Sans', sans-serif" }}
+          >
+            {current + 1} / {photos.length}
+          </p>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Next */}
+      <button
+        onClick={(e) => { e.stopPropagation(); next(); }}
+        className="absolute right-3 md:right-6 z-10 p-2 rounded-full transition-colors"
+        style={{ color: "#FAF7F2", background: "rgba(255,255,255,0.1)" }}
+        aria-label="Próxima"
+      >
+        <ChevronRight size={26} />
+      </button>
     </motion.div>
   );
 }
 
-function Lightbox({ 
-  images, 
-  currentIndex, 
-  isOpen, 
-  onClose, 
-  onPrevious, 
-  onNext 
+/* ─── Gallery Card ───────────────────────────────────────────────────────── */
+function GalleryCard({
+  photo,
+  index,
+  onClick,
 }: {
-  images: typeof GALLERY_IMAGES;
-  currentIndex: number;
-  isOpen: boolean;
-  onClose: () => void;
-  onPrevious: () => void;
-  onNext: () => void;
+  photo: GalleryPhoto;
+  index: number;
+  onClick: () => void;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
-          onClick={onClose}
-        >
-          <motion.button
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ delay: 0.1 }}
-            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors p-2"
-            onClick={onClose}
-            aria-label="Fechar"
-          >
-            <X size={24} strokeWidth={1.5} />
-          </motion.button>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={visible ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      className="group relative cursor-pointer overflow-hidden rounded-lg"
+      style={{
+        gridRow: photo.aspect === "portrait" ? "span 2" : "span 1",
+        boxShadow: "0 4px 20px rgba(61,53,48,0.12)",
+      }}
+      onClick={onClick}
+    >
+      <img
+        src={photo.src}
+        alt={photo.alt}
+        loading="lazy"
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        style={{ minHeight: photo.aspect === "portrait" ? "320px" : "200px" }}
+      />
 
-          <motion.button
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ delay: 0.1 }}
-            className="absolute left-4 text-white/80 hover:text-white transition-colors p-2 disabled:opacity-30 disabled:cursor-not-allowed"
-            onClick={(e) => {
-              e.stopPropagation();
-              onPrevious();
-            }}
-            disabled={currentIndex === 0}
-            aria-label="Anterior"
+      {/* Overlay */}
+      <div
+        className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: "rgba(61,53,48,0.45)" }}
+      >
+        <ZoomIn size={28} style={{ color: "#FAF7F2" }} />
+        {photo.caption && (
+          <p
+            className="mt-2 text-sm tracking-widest uppercase text-center px-3"
+            style={{ color: "#FAF7F2", fontFamily: "'Nunito Sans', sans-serif" }}
           >
-            <ChevronLeft size={28} strokeWidth={1.5} />
-          </motion.button>
-
-          <motion.button
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ delay: 0.1 }}
-            className="absolute right-4 text-white/80 hover:text-white transition-colors p-2 disabled:opacity-30 disabled:cursor-not-allowed"
-            onClick={(e) => {
-              e.stopPropagation();
-              onNext();
-            }}
-            disabled={currentIndex === images.length - 1}
-            aria-label="Próxima"
-          >
-            <ChevronRight size={28} strokeWidth={1.5} />
-          </motion.button>
-
-          <motion.img
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.3 }}
-            src={images[currentIndex].url}
-            alt={images[currentIndex].alt}
-            className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg"
-            onClick={(e) => e.stopPropagation()}
-          />
-
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ delay: 0.2 }}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm"
-            style={{ fontFamily: "'Nunito Sans', sans-serif" }}
-          >
-            {currentIndex + 1} / {images.length}
-          </motion.p>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            {photo.caption}
+          </p>
+        )}
+      </div>
+    </motion.div>
   );
 }
 
+/* ─── Section ────────────────────────────────────────────────────────────── */
 export default function GallerySection() {
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
-
-  const openLightbox = (index: number) => {
-    setSelectedImageIndex(index);
-  };
-
-  const closeLightbox = () => {
-    setSelectedImageIndex(null);
-  };
-
-  const goToPrevious = () => {
-    if (selectedImageIndex !== null && selectedImageIndex > 0) {
-      setSelectedImageIndex(selectedImageIndex - 1);
-    }
-  };
-
-  const goToNext = () => {
-    if (selectedImageIndex !== null && selectedImageIndex < GALLERY_IMAGES.length - 1) {
-      setSelectedImageIndex(selectedImageIndex + 1);
-    }
-  };
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
-    <section id="galeria" className="py-20 px-5">
-      <div className="max-w-6xl mx-auto">
+    <section
+      id="galeria"
+      className="py-20 md:py-28"
+      style={{ background: "#FAF7F2" }}
+    >
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          {/* Decorative line */}
-          <div className="w-14 h-px mx-auto mb-6" style={{ background: "oklch(0.76 0.12 85 / 0.7)" }} />
-
-          {/* Section title */}
-          <h2
-            className="text-4xl sm:text-5xl md:text-6xl font-light mb-4"
-            style={{ fontFamily: "'Cormorant Garamond', serif", color: "oklch(0.25 0.08 85)" }}
-          >
-            Nossos Momentos
-          </h2>
-
-          {/* Subtitle */}
+        <div className="text-center mb-14">
           <p
-            className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto"
-            style={{ fontFamily: "'Nunito Sans', sans-serif" }}
+            className="text-xs tracking-[0.35em] uppercase mb-3"
+            style={{ color: "#C4714A", fontFamily: "'Nunito Sans', sans-serif" }}
           >
-            Uma seleção de fotos especiais que contam um pouco da nossa história de amor
+            Momentos
           </p>
-        </motion.div>
+          <h2
+            className="text-4xl md:text-5xl font-light mb-4"
+            style={{ color: "#3D3530", fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            Nossa Galeria
+          </h2>
+          <div className="flex items-center justify-center gap-4 mb-5">
+            <div className="h-px w-16" style={{ background: "#B8965A" }} />
+            <span style={{ color: "#B8965A", fontSize: "1.2rem" }}>✦</span>
+            <div className="h-px w-16" style={{ background: "#B8965A" }} />
+          </div>
+          <p
+            className="text-base max-w-md mx-auto"
+            style={{ color: "#7A6A60", fontFamily: "'Nunito Sans', sans-serif", lineHeight: 1.7 }}
+          >
+            Cada imagem conta um pedaço da nossa história.{" "}
+            <span style={{ color: "#C4714A" }}>
+              {COUPLE_NAMES.partner2} &amp; {COUPLE_NAMES.partner1}
+            </span>
+          </p>
+        </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-          {GALLERY_IMAGES.map((image, index) => (
-            <GalleryImage
-              key={image.id}
-              image={image}
-              onClick={() => openLightbox(index)}
+        {/* Masonry Grid */}
+        <div
+          className="grid gap-3 md:gap-4"
+          style={{
+            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+            gridAutoRows: "200px",
+            gridAutoFlow: "dense",
+          }}
+        >
+          {galleryPhotos.map((photo, i) => (
+            <GalleryCard
+              key={photo.id}
+              photo={photo}
+              index={i}
+              onClick={() => setLightboxIndex(i)}
             />
           ))}
         </div>
 
-        {/* Call to action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center"
+        {/* Hint */}
+        <p
+          className="text-center text-xs mt-8 tracking-widest uppercase"
+          style={{ color: "#B8965A", fontFamily: "'Nunito Sans', sans-serif" }}
         >
-          <p
-            className="text-sm text-gray-500 italic"
-            style={{ fontFamily: "'Nunito Sans', sans-serif" }}
-          >
-            Clique em qualquer foto para ampliar
-          </p>
-        </motion.div>
+          Clique em qualquer foto para ampliar
+        </p>
       </div>
 
       {/* Lightbox */}
-      <Lightbox
-        images={GALLERY_IMAGES}
-        currentIndex={selectedImageIndex ?? 0}
-        isOpen={selectedImageIndex !== null}
-        onClose={closeLightbox}
-        onPrevious={goToPrevious}
-        onNext={goToNext}
-      />
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <Lightbox
+            photos={galleryPhotos}
+            index={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }

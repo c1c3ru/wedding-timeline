@@ -6,9 +6,68 @@
 export const WEDDING_DATE = new Date("2026-06-27T11:00:00-03:00");
 
 export const COUPLE_NAMES = {
-  partner1: "Noivo",
-  partner2: "Noiva",
+  partner1: "Cícero",
+  partner2: "Ilana",
 };
+
+/*
+  GALERIA DE FOTOS
+  Para adicionar ou trocar fotos, edite o array galleryPhotos abaixo.
+  Cada item precisa de: src (URL da imagem), alt (descrição), caption (legenda opcional) e aspect ("portrait" | "landscape").
+  Imagens geradas por IA — substitua pelas fotos reais do casal quando disponíveis.
+*/
+export interface GalleryPhoto {
+  id: string;
+  src: string;
+  alt: string;
+  caption?: string;
+  aspect: "portrait" | "landscape";
+}
+
+export const galleryPhotos: GalleryPhoto[] = [
+  {
+    id: "g1",
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-1-fpTqqFgaw7xx267wQJp746.png",
+    alt: "Ilana e Cícero se olhando no altar",
+    caption: "O nosso sim",
+    aspect: "portrait",
+  },
+  {
+    id: "g2",
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-2-bwDeHfeA2bsj7UikUepxEy.png",
+    alt: "Decoração floral do corredor da cerimônia",
+    caption: "Detalhes que encantam",
+    aspect: "landscape",
+  },
+  {
+    id: "g3",
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-3-LbYasyrpxFMRebvFshxPBQ.png",
+    alt: "Casal caminhando de mãos dadas pelo corredor",
+    caption: "Juntos para sempre",
+    aspect: "portrait",
+  },
+  {
+    id: "g4",
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-4-bNddr3JmPBtsj7WErnpDRD.png",
+    alt: "Mesa posta com flores e velas para a recepção",
+    caption: "A celebração nos aguarda",
+    aspect: "landscape",
+  },
+  {
+    id: "g5",
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-5-USLCjVzRrPmNK3g5YAMDZ7.webp",
+    alt: "Noiva se preparando com buquê de rosas brancas",
+    caption: "O momento antes do sim",
+    aspect: "portrait",
+  },
+  {
+    id: "g6",
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-6-jEFnLmVLtDo468dgFTr4n9.webp",
+    alt: "Primeiro beijo do casal no altar",
+    caption: "O primeiro beijo como casados",
+    aspect: "landscape",
+  },
+];
 
 export interface TimelineEvent {
   id: string;
@@ -120,6 +179,7 @@ export const navItems = [
   { id: "inicio", label: "Início" },
   { id: "cronograma", label: "Cronograma" },
   { id: "cardapio", label: "Cardápio" },
+  { id: "galeria", label: "Galeria" },
   { id: "locais", label: "Locais" },
   { id: "rsvp", label: "Confirme sua Presença" },
 ];
