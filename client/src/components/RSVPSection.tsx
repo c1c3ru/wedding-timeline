@@ -20,7 +20,6 @@ const GOOGLE_FORM_ACTION_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfaLEiwIcIVPp5Dl7cKpwPGnm4VQoJjS3SB_V6t6tKRWRdSGQ/formResponse";
 
 const FIELD_IDS = {
-  email: "emailAddress",
   nome: "entry.775120435",
   acompanhantes: "entry.1821605010",
   restricao: "entry.1259217677",
@@ -47,7 +46,6 @@ const OPCOES_RESTRICAO = [
 type FormState = "idle" | "loading" | "success" | "error";
 
 interface FormData {
-  email: string;
   nome: string;
   acompanhantes: string;
   restricoes: string[];
@@ -55,7 +53,6 @@ interface FormData {
 }
 
 const initialData: FormData = {
-  email: "",
   nome: "",
   acompanhantes: "1 pessoa (Somente eu)",
   restricoes: [],
@@ -96,7 +93,6 @@ export default function RSVPSection() {
 
     try {
       const body = new URLSearchParams();
-      body.append(FIELD_IDS.email, formData.email);
       body.append(FIELD_IDS.nome, formData.nome);
       body.append(FIELD_IDS.acompanhantes, formData.acompanhantes);
       
@@ -270,25 +266,6 @@ export default function RSVPSection() {
                 onSubmit={handleSubmit}
                 className="p-6 sm:p-8 space-y-6"
               >
-                {/* E-mail */}
-                <div>
-                  <label htmlFor="email" style={labelBase}>
-                    E-mail *
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder="Seu melhor e-mail"
-                    value={formData.email}
-                    onChange={handleChange}
-                    style={inputBase}
-                    onFocus={(e) => (e.target.style.borderColor = "oklch(0.60 0.08 55 / 0.55)")}
-                    onBlur={(e) => (e.target.style.borderColor = "oklch(0.60 0.08 55 / 0.18)")}
-                  />
-                </div>
-
                 {/* Nome */}
                 <div>
                   <label htmlFor="nome" style={labelBase}>
