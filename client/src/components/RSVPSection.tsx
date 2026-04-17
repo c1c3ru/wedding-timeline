@@ -96,7 +96,6 @@ export default function RSVPSection() {
       body.append(FIELD_IDS.nome, formData.nome);
       body.append(FIELD_IDS.acompanhantes, formData.acompanhantes);
       
-      // Checkboxes: para URLSearchParams, usamos o mesmo ID para múltiplas entradas
       const restricoesParaEnviar = formData.restricoes.length > 0
         ? formData.restricoes
         : ["Nenhuma"];
@@ -106,14 +105,15 @@ export default function RSVPSection() {
       }
       body.append(FIELD_IDS.mensagem, formData.mensagem);
 
+      // Campos de controle comuns do Google Forms para evitar Erro 400
+      body.append("fvv", "1");
+      body.append("pageHistory", "0");
+
       // Google Forms não retorna CORS-friendly response, mas o envio ocorre com no-cors.
       await fetch(GOOGLE_FORM_ACTION_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: body.toString(),
+        body: body, // O próprio fetch lida com URLSearchParams definindo o Content-Type correto
       });
 
       setFormState("success");
