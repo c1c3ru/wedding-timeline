@@ -371,7 +371,7 @@ export default function RSVPSection() {
                     id="mensagem"
                     name="mensagem"
                     rows={3}
-                    placeholder="Comentários, detalhes sobre restrições alimentares específicas, ou perguntas…"
+                    placeholder="Comentários,mensagem para os noivos ou perguntas"
                     value={formData.mensagem}
                     onChange={handleChange}
                     style={{ ...inputBase, resize: "none" }}
