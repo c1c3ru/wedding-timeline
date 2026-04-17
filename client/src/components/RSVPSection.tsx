@@ -92,13 +92,15 @@ export default function RSVPSection() {
     setFormState("loading");
 
     try {
-      const body = new FormData();
+      const body = new URLSearchParams();
       body.append(FIELD_IDS.nome, formData.nome);
       body.append(FIELD_IDS.acompanhantes, formData.acompanhantes);
-      // Checkboxes: cada seleção é um append separado com o mesmo key
+      
+      // Checkboxes: para URLSearchParams, usamos o mesmo ID para múltiplas entradas
       const restricoesParaEnviar = formData.restricoes.length > 0
         ? formData.restricoes
         : ["Nenhuma"];
+      
       for (const r of restricoesParaEnviar) {
         body.append(FIELD_IDS.restricao, r);
       }
@@ -108,7 +110,10 @@ export default function RSVPSection() {
       await fetch(GOOGLE_FORM_ACTION_URL, {
         method: "POST",
         mode: "no-cors",
-        body,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: body.toString(),
       });
 
       setFormState("success");
