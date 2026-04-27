@@ -217,7 +217,7 @@ export default function GallerySection() {
             className="text-base max-w-md mx-auto"
             style={{ color: "#7A6A60", fontFamily: "'Nunito Sans', sans-serif", lineHeight: 1.7 }}
           >
-            Cada imagem conta um pedaço da nossa história.{" "}
+            Cada imagem conta um pedaço da nossa história, ainda há muito para a ser escrito, ainda há muitos ladrilhos a serem fixados no nosso caminho, suspeito que estamos no caminho correto.{" "}
             <span style={{ color: "#C4714A" }}>
               {COUPLE_NAMES.partner2} &amp; {COUPLE_NAMES.partner1}
             </span>
