@@ -45,21 +45,21 @@ export const galleryPhotos: GalleryPhoto[] = [
     id: "g2",
     src: g2,
     alt: "Cícero e Ilana de kimono no jiu-jitsu",
-    caption: "Nosso amor no tatame",
+    caption: "Amamos estar juntos no tatame",
     aspect: "portrait",
   },
   {
     id: "g3",
     src: g3,
     alt: "Cícero e Ilana sorrindo à noite",
-    caption: "Noites inesquecíveis",
+    caption: "Dia de pagode na praça",
     aspect: "portrait",
   },
   {
     id: "g4",
     src: g4,
     alt: "Cícero e Ilana na igreja",
-    caption: "Momentos abençoados",
+    caption: "Celebrando a união de amigos",
     aspect: "portrait",
   },
   {
@@ -73,21 +73,21 @@ export const galleryPhotos: GalleryPhoto[] = [
     id: "g6",
     src: g6,
     alt: "Cícero e Ilana mergulhando com peixes",
-    caption: "Aventuras no fundo do mar",
+    caption: "Na praia, pausa para fotos com os peixinhos",
     aspect: "portrait",
   },
   {
     id: "g7",
     src: g7,
     alt: "Cícero e Ilana sentados no tatame",
-    caption: "Parceria em todos os momentos",
+    caption: "Minha parceira de treino e da vida, pra ela 'rala de descanso' :)",
     aspect: "portrait",
   },
   {
     id: "g8",
     src: g8,
     alt: "Cícero e Ilana sorrindo em um restaurante",
-    caption: "Celebrando a vida",
+    caption: "Por aí em algum lugar...",
     aspect: "portrait",
   },
 ];
@@ -102,7 +102,10 @@ export interface TimelineEvent {
   icon: string;
   mapsUrl: string;
   wazeUrl: string;
+  imagem?: string;
 }
+
+import vignoliImg from "../../assests/fotos/vignoli.jpg";
 
 export const cronograma: TimelineEvent[] = [
   {
@@ -115,6 +118,7 @@ export const cronograma: TimelineEvent[] = [
     icon: "rings",
     mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Av.+da+Abolição,+3220+-+Mucuripe,+Fortaleza",
     wazeUrl: "https://waze.com/ul?q=Av.+da+Abolição,+3220+-+Mucuripe,+Fortaleza&navigate=yes",
+    imagem: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/ceremony-rings-QdFEtTHGoELKH4PxQGtNuB.webp",
   },
   {
     id: "recepcao",
@@ -126,6 +130,7 @@ export const cronograma: TimelineEvent[] = [
     icon: "utensils",
     mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Rua+Silva+Jatahy,+529+-+Meireles,+Fortaleza",
     wazeUrl: "https://waze.com/ul?q=Rua+Silva+Jatahy,+529+-+Meireles,+Fortaleza&navigate=yes",
+    imagem: vignoliImg,
   },
 ];
 

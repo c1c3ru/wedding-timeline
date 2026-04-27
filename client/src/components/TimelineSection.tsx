@@ -10,16 +10,6 @@ import { useInView } from "@/hooks/useInView";
 import { motion } from "framer-motion";
 import { MapPin, Navigation, Clock, ExternalLink } from "lucide-react";
 
-const CEREMONY_IMAGE =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/ceremony-rings-QdFEtTHGoELKH4PxQGtNuB.webp";
-const RECEPTION_IMAGE =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/restaurant-reception-bUJL44cyQGu3tffFVtGpFg.webp";
-
-const eventImages: Record<string, string> = {
-  cerimonia: CEREMONY_IMAGE,
-  recepcao: RECEPTION_IMAGE,
-};
-
 function RingsIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -41,7 +31,7 @@ function UtensilsIcon() {
 
 function TimelineCard({ event, index }: { event: TimelineEvent; index: number }) {
   const { ref, isInView } = useInView({ threshold: 0.15 });
-  const image = eventImages[event.id];
+  const image = event.imagem;
   const isLast = index === cronograma.length - 1;
 
   return (
