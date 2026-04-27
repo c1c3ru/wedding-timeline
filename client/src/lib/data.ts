@@ -24,48 +24,71 @@ export interface GalleryPhoto {
   aspect: "portrait" | "landscape";
 }
 
+import g1 from "../../assests/fotos/g1.jpeg";
+import g2 from "../../assests/fotos/g2.jpeg";
+import g3 from "../../assests/fotos/g3.jpeg";
+import g4 from "../../assests/fotos/g4.jpeg";
+import g5 from "../../assests/fotos/g5.jpeg";
+import g6 from "../../assests/fotos/g6.jpeg";
+import g7 from "../../assests/fotos/g7.jpeg";
+import g8 from "../../assests/fotos/g8.jpeg";
+
 export const galleryPhotos: GalleryPhoto[] = [
   {
     id: "g1",
-    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-1-fpTqqFgaw7xx267wQJp746.png",
-    alt: "Ilana e Cícero se olhando no altar",
-    caption: "O nosso sim",
+    src: g1,
+    alt: "Cícero e Ilana na praia",
+    caption: "Dias de sol e mar",
     aspect: "portrait",
   },
   {
     id: "g2",
-    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-2-bwDeHfeA2bsj7UikUepxEy.png",
-    alt: "Decoração floral do corredor da cerimônia",
-    caption: "Detalhes que encantam",
-    aspect: "landscape",
+    src: g2,
+    alt: "Cícero e Ilana de kimono no jiu-jitsu",
+    caption: "Nosso amor no tatame",
+    aspect: "portrait",
   },
   {
     id: "g3",
-    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-3-LbYasyrpxFMRebvFshxPBQ.png",
-    alt: "Casal caminhando de mãos dadas pelo corredor",
-    caption: "Juntos para sempre",
+    src: g3,
+    alt: "Cícero e Ilana sorrindo à noite",
+    caption: "Noites inesquecíveis",
     aspect: "portrait",
   },
   {
     id: "g4",
-    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-4-bNddr3JmPBtsj7WErnpDRD.png",
-    alt: "Mesa posta com flores e velas para a recepção",
-    caption: "A celebração nos aguarda",
-    aspect: "landscape",
+    src: g4,
+    alt: "Cícero e Ilana na igreja",
+    caption: "Momentos abençoados",
+    aspect: "portrait",
   },
   {
     id: "g5",
-    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-5-USLCjVzRrPmNK3g5YAMDZ7.webp",
-    alt: "Noiva se preparando com buquê de rosas brancas",
-    caption: "O momento antes do sim",
+    src: g5,
+    alt: "Cícero e Ilana juntos em momento descontraído",
+    caption: "Alegria de estar junto",
     aspect: "portrait",
   },
   {
     id: "g6",
-    src: "https://d2xsxph8kpxj0f.cloudfront.net/310419663032352338/AQpd5VvaiwiMHbCR2RvJQA/gallery-6-jEFnLmVLtDo468dgFTr4n9.webp",
-    alt: "Primeiro beijo do casal no altar",
-    caption: "O primeiro beijo como casados",
-    aspect: "landscape",
+    src: g6,
+    alt: "Cícero e Ilana mergulhando com peixes",
+    caption: "Aventuras no fundo do mar",
+    aspect: "portrait",
+  },
+  {
+    id: "g7",
+    src: g7,
+    alt: "Cícero e Ilana sentados no tatame",
+    caption: "Parceria em todos os momentos",
+    aspect: "portrait",
+  },
+  {
+    id: "g8",
+    src: g8,
+    alt: "Cícero e Ilana sorrindo em um restaurante",
+    caption: "Celebrando a vida",
+    aspect: "portrait",
   },
 ];
 
