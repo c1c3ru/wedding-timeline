@@ -194,6 +194,15 @@ export default function RSVPSection() {
           >
             Confirme sua presença até o dia 20 de junho de 2026
           </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={titleVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="mt-2 text-xs sm:text-sm font-semibold"
+            style={{ fontFamily: "'Nunito Sans', sans-serif", color: "oklch(0.50 0.02 60)" }}
+          >
+            Por favor, note que o convite é individual e intransferível. Apenas pessoas previamente convidadas poderão participar.
+          </motion.p>
         </div>
 
         {/* Card do formulário */}
